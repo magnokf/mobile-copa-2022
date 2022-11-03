@@ -10,6 +10,8 @@ export function SigIn() {
 			<Button
 				title="ENTRAR COM GOOGLE"
 				leftIcon={<Icon as={Fontisto} name="google" color="white" size="md" />}
+				type="secondary"
+				
 			
 			/>
 		
