@@ -5,9 +5,8 @@ import { Fontisto } from '@expo/vector-icons'
 import {useAuth} from '../hooks/useAuth'
 
 export function SigIn() {
-	const {signInWithGoogle, user} = useAuth()
+	const {signIn, user} = useAuth()
 	
-	console.log(user)
 	return (
 		<Center flex={1} bg="gray.900" p={7}>
 			<Logo width={212} height={40} />
@@ -16,7 +15,7 @@ export function SigIn() {
 				title="ENTRAR COM GOOGLE"
 				leftIcon={<Icon as={Fontisto} name="google" color="white" size="md" />}
 				type="secondary"
-				onPress={signInWithGoogle}
+				onPress={signIn}
 			
 			
 			/>

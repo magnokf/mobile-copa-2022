@@ -1,4 +1,9 @@
-import React, { createContext } from 'react'
+import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import * as AuthSession from 'expo-auth-session'
+import * as Google from 'expo-auth-session/providers/google'
+import * as WebBrowser from 'expo-web-browser'
+
+WebBrowser.maybeCompleteAuthSession()
 
 interface UserProps {
 	name: string
@@ -7,27 +12,58 @@ interface UserProps {
 
 export interface AuthContextDataProps {
 	user: UserProps
-	signInWithGoogle: () => Promise<void>
+	isUserLoading: boolean
+	signIn: () => Promise<void>
 }
 
 interface AuthProviderProps {
-	children: React.ReactNode
+	children: ReactNode
+	
 }
-
 export const AuthContext = createContext({} as AuthContextDataProps)
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
-	async function signInWithGoogle() {
-	console.log('signInWithGoogle')
+	const [ user, setUser ] = useState<UserProps>({} as UserProps)
+	const [ isUserLoading, setIsUserLoading ] = useState(false)
+	const [ request, response, promptAsync ] = Google.useAuthRequest({
+		clientId: '191878231657-86mu8h8nm7rj0v55gg8nsb6svamhq79p.apps.googleusercontent.com',
+		redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
+		scopes: [ 'profile', 'email' ]
+	})
+	
+	async function signIn() {
+		try {
+			setIsUserLoading(true)
+			await promptAsync()
+		}
+		catch (error) {
+			console.log(error)
+			throw error
+		}
+		finally {
+			setIsUserLoading(false)
+		}
 	}
+	
+	async function signInWithGoogle(access_token: string) {
+		//buscar as informações do usuário no backend com o token
+		console.log('TOKEN DE AUTENTICAÇÃO: ', access_token)
+		
+	}
+	
+	useEffect(() =>{
+		if (response?.type === 'success' && response.authentication?.accessToken) {
+			// const { access_token } = response.params
+			// token para testar a autenticação na api backend server
+			signInWithGoogle(response.authentication.accessToken)
+		}
+	}, [response])
 	
 	return (
 		<AuthContext.Provider value={{
-			signInWithGoogle,
-			user: {
-				name: 'John Doe',
-				avatarUrl: 'https://github.com/rodrigorgtic.png'
-			}
+			signIn,
+			isUserLoading,
+			user
 			
 			
 		}}>

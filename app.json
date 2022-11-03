@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "mobilecopa2022",
+    "slug": "mobilecopa2022",
+    "scheme": "mobilecopa2022",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
