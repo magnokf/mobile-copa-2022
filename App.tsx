@@ -3,7 +3,7 @@ import { Roboto_400Regular, Roboto_700Bold, Roboto_500Medium, useFonts } from '@
 import { Loading } from './src/components/Loading'
 
 import { THEME } from './src/styles/theme'
-import { SignIn } from './src/screens/SignIn'
+import { SignIn } from './src/screens/SigIn'
 import { AuthContextProvider } from './src/contexts/AuthContext'
 
 export default function App() {
